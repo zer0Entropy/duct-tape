@@ -13,3 +13,13 @@ void DuctTape::WindowManager::Init() {
         mainWindow.Init();
     } // if(!mainWindow.windowPtr)
 }
+
+void DuctTape::WindowManager::Shutdown() {
+    if(mainWindow.windowPtr) {
+        mainWindow.windowPtr->close();
+        mainWindow.windowPtr.reset(nullptr);
+        mainWindow.properties.width = mainWindow.properties.height = 0;
+        mainWindow.properties.title = "";
+        mainWindow.properties.fullscreen = false;
+    } // if mainWindow.windowPtr
+}

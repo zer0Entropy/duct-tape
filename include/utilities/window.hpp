@@ -57,6 +57,7 @@ namespace DuctTape {
 
         [[nodiscard]] const Window& GetMainWindow() const;
         void Init();
+        void Shutdown();
     private:
         Window mainWindow;
     };

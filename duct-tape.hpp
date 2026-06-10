@@ -9,4 +9,6 @@ DuctTape::Engine& GetInstance();
 
 void Init();
 
+void Shutdown();
+
 #endif // DUCT_TAPE_HPP
