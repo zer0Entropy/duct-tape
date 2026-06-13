@@ -4,6 +4,10 @@ const DuctTape::Window& DuctTape::WindowManager::GetMainWindow() const {
     return mainWindow;
 }
 
+DuctTape::Window& DuctTape::WindowManager::GetMainWindow() {
+    return static_cast<Window&>(mainWindow);
+}
+
 void DuctTape::WindowManager::Init() {
     if(!mainWindow.windowPtr) {
         mainWindow.properties.width = 800;
