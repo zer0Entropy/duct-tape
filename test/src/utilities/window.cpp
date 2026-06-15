@@ -3,6 +3,7 @@
 //
 #include <vector>
 #include "../../include/utilities/window.hpp"
+#include "../../../include/core/engine.hpp"
 
 // WindowInitTest Implementation
 WindowInitTest::WindowInitTest(DuctTape::WindowManager& windowManager):
@@ -26,6 +27,10 @@ TestName WindowInitTest::GetName() const {
 TestResult WindowInitTest::Run() {
     TestResult result;
     DuctTape::Window& window{windowManager.GetMainWindow()};
+    window.properties.width = DuctTape::Engine::windowWidth;
+    window.properties.height = DuctTape::Engine::windowHeight;
+    window.properties.title = DuctTape::Engine::windowTitle;
+    window.properties.fullscreen = true;
     windowManager.Init();
     if(window.IsOpen()) {
         result.passed = true;
@@ -56,7 +61,7 @@ TestResult WindowInitTest::Run() {
             else if(param.compare("fullscreen") == 0) {
                 details += std::to_string(window.properties.fullscreen);
             } // fullscreen
-            if(index < paramNames.size()) {
+            if(index < paramNames.size() - 1) {
                 details += ", ";
             } // if this isn't the last parameter
             ++index;
@@ -89,7 +94,7 @@ TestName WindowCloseTest::GetName() const {
 
 TestResult WindowCloseTest::Run() {
     TestResult result;
-    DuctTape::Window& window{windowManager.GetMainWindow()};
+    const DuctTape::Window& window{windowManager.GetMainWindow()};
     windowManager.Shutdown();
     if(!window.IsOpen()) {
         result.passed = true;
@@ -121,7 +126,7 @@ TestResult WindowCloseTest::Run() {
             else if(param.compare("fullscreen") == 0) {
                 details += std::to_string(window.properties.fullscreen);
             } // fullscreen
-            if(index < paramNames.size()) {
+            if(index < paramNames.size() - 1) {
                 details += ", ";
             } // if this isn't the last parameter
             ++index;

@@ -16,7 +16,7 @@ struct WindowInitTest final: Test {
     TestName GetName() const override;
     TestResult Run() override;
 private:
-    DuctTape::WindowManager windowManager;
+    DuctTape::WindowManager& windowManager;
     static constexpr std::string testName = "WindowInitTest";
 };
 
@@ -28,8 +28,14 @@ struct WindowCloseTest final: Test {
     TestName GetName() const override;
     TestResult Run() override;
 private:
-    DuctTape::WindowManager windowManager;
+    DuctTape::WindowManager& windowManager;
     static constexpr std::string testName = "WindowCloseTest";
+};
+
+struct WindowManagerTests {
+    WindowInitTest initTest;
+    WindowCloseTest closeTest;
+    std::vector<TestResult> RunAll();
 };
 
 #endif //DT_TEST_WINDOW_HPP

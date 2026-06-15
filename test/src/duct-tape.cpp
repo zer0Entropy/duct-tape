@@ -9,15 +9,11 @@ DuctTape::Engine& GetInstance() {
 
 void Init() {
     DuctTape::Engine& engine{GetInstance()};
-    engine.windowManager.Init();
-    engine.initialized = true;
-    engine.running = true;
+    engine.Init();
 }
 
 void Shutdown() {
     DuctTape::Engine& engine{GetInstance()};
-    engine.windowManager.Shutdown();
-    engine.initialized = false;
-    engine.running = false;
+    engine.Shutdown();
 }
 

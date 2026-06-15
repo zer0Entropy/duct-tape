@@ -5,6 +5,8 @@
 #ifndef DT_TEST_HPP
 #define DT_TEST_HPP
 
+#define DT_TEST
+
 #include <string>
 #include "result.hpp"
 
@@ -21,5 +23,7 @@ struct Test {
     virtual TestName GetName() const = 0;
     virtual TestResult Run() = 0;
 };
+
+void DisplayTestIntro(const Test& test);
 
 #endif //DT_TEST_HPP

@@ -16,9 +16,16 @@ struct TestResult {
 
     }
 
+    explicit TestResult(std::string_view details, bool passed):
+        details(std::string{details}), passed(passed) {
+
+    }
+
     ~TestResult() {
 
     }
 };
+
+void DisplayTestResult(const TestResult& result);
 
 #endif //DT_TEST_RESULT_HPP

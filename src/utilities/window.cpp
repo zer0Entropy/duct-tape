@@ -8,22 +8,38 @@ DuctTape::Window& DuctTape::WindowManager::GetMainWindow() {
     return static_cast<Window&>(mainWindow);
 }
 
+bool DuctTape::WindowManager::SetResolution(unsigned int width, unsigned int height) {
+    WindowProperties properties{width, height, "", false};
+    bool valid{ValidateProperties(properties)};
+    if(valid) {
+        mainWindow.properties.width = width;
+        mainWindow.properties.height = height;
+    } // if valid
+    return valid;
+}
+
+bool DuctTape::WindowManager::SetTitle(std::string_view title) {
+    WindowProperties properties{MaxWindowWidth, MaxWindowHeight, std::string{title}, false};
+    bool valid{ValidateProperties(properties)};
+    if(valid) {
+        mainWindow.properties.title = std::string{title};
+    } // if valid
+    return valid;
+}
+
+void DuctTape::WindowManager::SetFullscreen(bool fullscreen) {
+    mainWindow.properties.fullscreen = fullscreen;
+}
+
 void DuctTape::WindowManager::Init() {
-    if(!mainWindow.windowPtr) {
-        mainWindow.properties.width = 800;
-        mainWindow.properties.height = 600;
-        mainWindow.properties.title = "DuctTape Test";
-        mainWindow.properties.fullscreen = true;
+    bool propertiesValid{ValidateProperties(mainWindow.properties)};
+    if(!mainWindow.windowPtr && propertiesValid) {
         mainWindow.Init();
     } // if(!mainWindow.windowPtr)
 }
 
 void DuctTape::WindowManager::Shutdown() {
     if(mainWindow.windowPtr) {
-        mainWindow.windowPtr->close();
-        mainWindow.windowPtr.reset(nullptr);
-        mainWindow.properties.width = mainWindow.properties.height = 0;
-        mainWindow.properties.title = "";
-        mainWindow.properties.fullscreen = false;
+        mainWindow.Shutdown();
     } // if mainWindow.windowPtr
 }

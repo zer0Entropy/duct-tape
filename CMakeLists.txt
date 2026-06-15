@@ -14,7 +14,18 @@ FetchContent_Declare(json URL https://github.com/nlohmann/json/releases/download
 FetchContent_MakeAvailable(SFML json)
 
 add_library(duct_tape STATIC test/src/duct-tape.cpp
-            src/utilities/window.cpp)
+            src/utilities/window.cpp
+        include/world/level.hpp
+        include/world/tile.hpp
+        include/world/creature.hpp
+        include/world/world.hpp
+        include/core/game.hpp
+        include/core/player.hpp
+        include/common/init.hpp
+        src/common/init.cpp
+        include/common/shutdown.hpp
+        src/common/shutdown.cpp
+        src/core/engine.cpp)
 
 target_link_libraries(duct_tape
     PRIVATE
@@ -28,7 +39,8 @@ add_executable(duct_tape_test
         test/include/result.hpp
         test/include/test.hpp
         test/src/test.cpp
-        test/src/utilities/window.cpp)
+        test/src/utilities/window.cpp
+        test/src/result.cpp)
 target_sources(duct_tape_test
     PRIVATE
         test/src/main.cpp

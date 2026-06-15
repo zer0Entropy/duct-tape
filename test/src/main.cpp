@@ -4,50 +4,37 @@
 
 int main() {
     DuctTape::Engine& engine{GetInstance()};
-    engine.running = true;
+    engine.Init();
 
-    if(engine.running) {
-        WindowInitTest windowInitTest{engine.windowManager};
-        const TestResult initTestResult{
-            windowInitTest.Run()
-        };
-        std::cout << "Running test #" << std::to_string(static_cast<int>(windowInitTest.GetID()));
-        std::cout << ": (" << windowInitTest.GetName() << ")" << std::endl;
-        std::cout << "Result: ";
-        if(initTestResult.passed) {
-            std::cout << "Passed!" << std::endl;
-        } // if windowInitTest passed
-        else {
-            std::cout << "Failed!" << std::endl;
-            std::cout << "Details: " << initTestResult.details << std::endl;
-        } // else windowInitTest failed
+    WindowInitTest windowInitTest{engine.windowManager};
+    engine.testQueue.push_back(&windowInitTest);
 
-        WindowCloseTest windowCloseTest{engine.windowManager};
-        const TestResult closeTestResult{
-            windowCloseTest.Run()
-        };
-        std::cout << "Running test #" << std::to_string(static_cast<int>(windowCloseTest.GetID()));
-        std::cout << ": (" << windowCloseTest.GetName() << ")" << std::endl;
-        std::cout << "Result: ";
-        if(initTestResult.passed) {
-            std::cout << "Passed!" << std::endl;
-        } // if windowCloseTest passed
+    WindowCloseTest windowCloseTest{engine.windowManager};
+    engine.testQueue.push_back(&windowCloseTest);
+
+    while(engine.running) {
+        if(!engine.testQueue.empty()) {
+            const Test& nextTest{*engine.testQueue.front()};
+            DisplayTestIntro(nextTest);
+            TestResult result{engine.RunNextTest()};
+            DisplayTestResult(result);
+        } // if test queue is not empty
         else {
-            std::cout << "Failed!" << std::endl;
-            std::cout << "Details: " << initTestResult.details << std::endl;
-        } // else windowCloseTest failed
+            engine.Shutdown();
+        } // when tests are done, shutdown engine
 
         DuctTape::Window& window{engine.windowManager.GetMainWindow()};
-        while(window.IsOpen()) {
+        if(window.IsOpen()) {
             while(const std::optional event = window.windowPtr->pollEvent()) {
                 if(event->is<sf::Event::Closed>()) {
                     engine.running = false;
                     break;
-                } // if window is closed
-            } // while event
+                } // if Closed event
+            } // while events remain in queue
             window.windowPtr->display();
-        } // while window is open
-    } // if(engine.running)
+        } // if window is open
+    } // while engine is running
+
     Shutdown();
     return 0;
 }
