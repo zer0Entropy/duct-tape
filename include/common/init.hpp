@@ -7,9 +7,17 @@
 
 namespace DuctTape {
     struct NeedsToBeInitialized {
-        NeedsToBeInitialized() = default;
-        virtual ~NeedsToBeInitialized() = 0;
+        bool initialized;
+
+        NeedsToBeInitialized(): initialized{false} {}
+
+        virtual ~NeedsToBeInitialized() = default;
+
         virtual void Init() = 0;
+
+        bool IsInitialized() const {
+            return initialized;
+        }
     };
 }
 

@@ -7,9 +7,17 @@
 
 namespace DuctTape {
     struct NeedsToBeShutdown {
-        NeedsToBeShutdown() = default;
-        virtual ~NeedsToBeShutdown() = 0;
+        bool shutdown;
+
+        NeedsToBeShutdown(): shutdown{false} {}
+
+        virtual ~NeedsToBeShutdown() = default;
+
         virtual void Shutdown() = 0;
+
+        bool IsShutdown() const {
+            return shutdown;
+        }
     };
 }
 
